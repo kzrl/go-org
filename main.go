@@ -19,7 +19,7 @@ func main() {
 	log := log.New(os.Stderr, "", 0)
 	if len(os.Args) < 3 {
 		log.Println("USAGE: org FILE OUTPUT_FORMAT")
-		log.Fatal("Supported output formats: org, html, html-chroma")
+		log.Fatal("Supported output formats: org, html, html-chroma, jira")
 	}
 	path := os.Args[1]
 	bs, err := ioutil.ReadFile(path)
@@ -37,6 +37,8 @@ func main() {
 		writer := org.NewHTMLWriter()
 		writer.HighlightCodeBlock = highlightCodeBlock
 		out, err = d.Write(writer)
+	case "jira":
+		out, err = d.Write(org.NewJiraWriter())
 	default:
 		log.Fatal("Unsupported output format")
 	}
